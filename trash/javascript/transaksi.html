@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Transaksi</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-width=1, maximum-width=1">
+	<link rel="stylesheet" type="text/css" href="bin/bootstrap/css/bootstrap.min.css">
+	<script type="text/javascript" src='data/transaksi.js'></script>
+</head>
+<body>
+<div class="container">
+	<h1 class="text-center">Transaksi</h1>
+	<hr>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Tanggal</th>
+				<th>Barang</th>
+				<th>Modal</th>
+				<th>Jual</th>
+				<th>Keuntungan</th>
+			</tr>
+		</thead>
+		<tbody>
+			<script type="text/javascript">
+				transaksi = transaksi.reverse();
+				for (n in transaksi){
+				document.writeln('<tr>\
+					<td>'+new Date(transaksi[n].tanggal).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })+'</td>\
+					<td>'+transaksi[n].barang+'</td>\
+					<td>Rp '+(transaksi[n].modal).toLocaleString('id-ID')+'</td>\
+					<td>Rp '+(transaksi[n].jual).toLocaleString('id-ID')+'</td>\
+					<td>Rp '+(transaksi[n].jual - transaksi[n].modal).toLocaleString('id-ID')+'</td>\
+				</tr>');	
+				}
+			</script>
+			<script type="text/javascript">
+				total = 0;
+				for (n in transaksi){
+					total += (transaksi[n].jual - transaksi[n].modal);
+				}
+			</script>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td><strong>Total</strong></td>
+				<script type="text/javascript">
+					document.writeln('<td>Rp '+(total).toLocaleString('id-ID')+'</td>');
+				</script>
+			</tr>
+		</tbody>
+	</table>
+	<h2>Keuntungan Per Bulan</h2>
+	<script type="text/javascript">
+		bulan = [];
+		for (n in transaksi){
+			bulan.push(new Date(transaksi[n].tanggal).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }));
+		}
+		bulan = Array.from(new Set(bulan));
+	</script>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Bulan</th>
+				<th>Keuntungan</th>
+			</tr>
+		</thead>
+		<tbody>
+			<script type="text/javascript">
+				for (n in bulan){
+					document.writeln('<tr>\
+						<td>'+bulan[n]+'</td>');
+					total_per_bulan = 0;
+					for (x in transaksi){
+						if (new Date(transaksi[x].tanggal).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }) == bulan[n]){
+							total_per_bulan += (transaksi[x].jual - transaksi[x].modal);
+						}
+					}
+					document.writeln('<td>Rp '+(total_per_bulan).toLocaleString('id-ID')+'</td>');
+					document.writeln('</tr>');	
+				}
+			</script>
+		</tbody>
+	</table>
+</div>
+</body>
+</html>
